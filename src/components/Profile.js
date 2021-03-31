@@ -6,8 +6,15 @@ import { useParams, Link } from "react-router-dom";
 
 function Profile(props) {
   const { store } = props;
-    let { userId } = useParams();
-  const userA = store.users.find(user => (user.id != null ? user.id == userId : user.id === store.currentUserId));
+  let { userId } = useParams();
+  const userA = store.users.find(user =>
+    user.id != null ? user.id == userId : user.id === store.currentUserId
+  );
+  const followed = props.store.followers.some(
+    follower =>
+      follower.userId === userA.id &&
+      follower.followerId === props.store.currentUserId
+  );
 
   function getPosts() {
     return store.posts.filter(post => post.userId === userA.id);
@@ -31,10 +38,17 @@ function Profile(props) {
     );
     return followers.length;
   }
+  function handleFollow() {
+    props.onFollow(userA.id, props.store.currentUserId);
+  }
+  function handleUnfollow() {
+    props.onUnfollow(userA.id, props.store.currentUserId);
+  }
+ 
 
   function get() {
     return getPosts().map(post => (
-      <Link   key = {post.id} to= {`/${post.id}`}>
+      <Link key={post.id} to={`/${post.id}`}>
         <PostThumbnail props={post} />
       </Link>
     ));
@@ -52,6 +66,18 @@ function Profile(props) {
             <p>
               <strong>{userA.name}</strong>
             </p>
+            <div>
+              {userA.id !== store.currentUserId &&
+                (followed ? (
+                  <button className={css.followBtn} onClick={handleFollow}>
+                    follow
+                  </button>
+                ) : (
+                  <button className={css.unfollowBtn} onClick={handleUnfollow}>
+                    Unfollow
+                  </button>
+                ))}
+            </div>
             <p>{userA.bio}</p>
           </div>
         </div>
@@ -82,5 +108,4 @@ function Profile(props) {
     </div>
   );
 }
-
 export default Profile;

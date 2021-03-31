@@ -63,10 +63,25 @@ function App(props) {
     });
   }
   function addFollower(userId, followerId) {
-    // use concat
+    const newRelation = {
+      userId: userId,
+      followerId: followerId
+    };
+  console.log("test111");
+    setStore({
+      ...store,
+      followers: store.followers.concat(newRelation)
+      
+    }
+            );
   }
   function removeFollower(userId, followerId) {
-    // use filter
+    setStore({
+      ...store,
+      followers: store.followers.filter(
+        follower => !(follower.userId === userId && follower.followerId === followerId)
+      )
+    });
   }
 
   return (
@@ -79,18 +94,20 @@ function App(props) {
               <Explore store={store} />
             </Route>
             <Route path="/newPost">
-              <NewPost
+              <NewPost 
                 store={store}
-                addPost={addPost}
-                //cancelPost={cancelPost}
-              />
+                addPost={addPost} />
             </Route>
             <Route path="/activity">
               return <Activity />;
             </Route>
             <Route path="/profile/:userId?">
               //Switch will render the first Route
-              <Profile store={store} />
+              <Profile
+                store={store}
+                onFollow={addFollower}
+                onUnfollow={removeFollower}
+              />
             </Route>
             <Route path="/:postId?">
               <Home

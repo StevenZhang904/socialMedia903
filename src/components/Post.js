@@ -56,9 +56,8 @@ function Post(props) {
           <p className={css.Likes}>{props.likes.count}likes</p>
         </div>
         <div className={css.container}>
-          <Link to={"/profile"+ props.user.id}>{props.user.id}</Link>:{props.post.desc}
-          <br></br>
-          {props.comments.map(comment => Comments(comment))}
+
+           <Comments userId={props.post.userId} desc={props.post.desc} comments={props.comments} />
           <br></br>
           <div className={css.TimeStamp}>{timespan(props.post.datetime)}</div>
           {toggleComment && (
