@@ -44,7 +44,16 @@ function Profile(props) {
   function handleUnfollow() {
     props.onUnfollow(userA.id, props.store.currentUserId);
   }
- 
+   function renderButton() {
+    if (userA.id===store.currentUserId) {
+      return;
+    }
+    let following = store.followers.some(follow => follow.userId === userA.id && follow.followerId === store.currentUserId)
+    let c = following ? css.unfollowBtn : css.followBtn;
+    let tex = following ? "Unfollow" : "Follow";
+    let judge = following ? handleUnfollow : handleFollow;
+    return(
+    <button className={c} onClick={judge}>{tex}</button>);}
 
   function get() {
     return getPosts().map(post => (
@@ -60,24 +69,13 @@ function Profile(props) {
         <div className={css.pr}>
           <div className={css.head}>
             <img src={userA.photo} alt="face" />
-            <h2>{userA.id}</h2>
+            <h2>{userA.id}</h2>{renderButton()}
           </div>
           <div className={css.intro}>
             <p>
               <strong>{userA.name}</strong>
             </p>
-            <div>
-              {userA.id !== store.currentUserId &&
-                (followed ? (
-                  <button className={css.followBtn} onClick={handleFollow}>
-                    follow
-                  </button>
-                ) : (
-                  <button className={css.unfollowBtn} onClick={handleUnfollow}>
-                    Unfollow
-                  </button>
-                ))}
-            </div>
+
             <p>{userA.bio}</p>
           </div>
         </div>
