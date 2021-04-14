@@ -1,23 +1,38 @@
-import React from "react";
+import React, { useContext }from "react";
 import Header from "./Header.js";
 import PostThumbnail from "./PostThumbnail.js";
 import css from "./Profile.module.css";
 import { useParams, Link } from "react-router-dom";
+import { StoreContext } from "../contexts/StoreContext";
 
 function Profile(props) {
-  const { store } = props;
+  let {
+    posts,
+    users,
+    comments,
+    likes,
+    currentUserId,
+    addComment,
+    addLike,
+    removeLike,
+    addFollower,
+    removeFollower,
+    followers
+  } = useContext(StoreContext);
+  
   let { userId } = useParams();
-  const userA = store.users.find(user =>
-    user.id != null ? user.id == userId : user.id === store.currentUserId
+  //console.log(users, currentUserId)
+  const userA = users.find((userId === undefined) ? user => user.id === currentUserId: user => user.id === userId
   );
-  const followed = props.store.followers.some(
+  console.log(followers)
+  const followed = followers.some(
     follower =>
       follower.userId === userA.id &&
-      follower.followerId === props.store.currentUserId
+      follower.followerId === currentUserId
   );
 
   function getPosts() {
-    return store.posts.filter(post => post.userId === userA.id);
+    return posts.filter(post => post.userId === userA.id);
   }
 
   function Posts() {
@@ -26,34 +41,41 @@ function Profile(props) {
   }
 
   function Followers() {
-    let followers = store.followers.filter(
+    let followers1 = followers.filter(
       follower => follower.userId === userA.id
     );
-    return followers.length;
+    return followers1.length;
   }
 
   function Following() {
-    let followers = store.followers.filter(
+    let followers1 = followers.filter(
       follower => follower.followerId === userA.id
     );
-    return followers.length;
+    return followers1.length;
   }
   function handleFollow() {
-    props.onFollow(userA.id, props.store.currentUserId);
+    addFollower(userA.id, currentUserId);
   }
   function handleUnfollow() {
-    props.onUnfollow(userA.id, props.store.currentUserId);
+    removeFollower(userA.id, currentUserId);
   }
-   function renderButton() {
-    if (userA.id===store.currentUserId) {
+  function renderButton() {
+    if (userA.id === currentUserId) {
       return;
     }
-    let following = store.followers.some(follow => follow.userId === userA.id && follow.followerId === store.currentUserId)
+    let following = followers.some(
+      follow =>
+        follow.userId === userA.id && follow.followerId === currentUserId
+    );
     let c = following ? css.unfollowBtn : css.followBtn;
     let tex = following ? "Unfollow" : "Follow";
     let judge = following ? handleUnfollow : handleFollow;
-    return(
-    <button className={c} onClick={judge}>{tex}</button>);}
+    return (
+      <button className={c} onClick={judge}>
+        {tex}
+      </button>
+    );
+  }
 
   function get() {
     return getPosts().map(post => (
@@ -69,7 +91,8 @@ function Profile(props) {
         <div className={css.pr}>
           <div className={css.head}>
             <img src={userA.photo} alt="face" />
-            <h2>{userA.id}</h2>{renderButton()}
+            <h2>{userA.id}</h2>
+            {renderButton()}
           </div>
           <div className={css.intro}>
             <p>

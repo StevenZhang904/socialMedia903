@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
+import { StoreContext } from "../contexts/StoreContext";
 import Comments from "./Comments.js";
 import { Link } from "react-router-dom";
 

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import css from "./NewPost.module.css";
 import FileLoader from "./FileLoader.js";
-import {
-  useHistory
-} from "react-router-dom";
+import { StoreContext } from "../contexts/StoreContext";
+import { useHistory } from "react-router-dom";
 
 function NewPost(props) {
+  let {addPost} = useContext(StoreContext);
   const [dragging, setDragging] = useState(false); // to show a dragging effect
   const [desc, setDesc] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -51,7 +51,7 @@ function NewPost(props) {
       setError("Upload failed.");
       return;
     }
-    props.addPost(photo, desc);
+    addPost(photo, desc);
     history.push("/");
     setError("");
   }
