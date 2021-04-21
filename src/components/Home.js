@@ -3,6 +3,7 @@ import Post from "./Post.js";
 import { useParams } from "react-router-dom";
 import { useContext } from "react";
 import { StoreContext } from "../contexts/StoreContext";
+ import useHistory from 'react-router-dom'
 function Home(props) {
   let {
     posts,

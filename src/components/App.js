@@ -11,6 +11,8 @@ import initialStore from "./initialStore.js";
 import uniqueId from "./uniqueId.js";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import StoreContextProvider from "../contexts/StoreContext";
+import Login from "./Login.js";
+import Signup from "./Signup.js";
 
 function App(props) {
   const [page, setPage] = useState("home");
@@ -23,20 +25,25 @@ function App(props) {
           <main className={css.content}>
             <Switch>
               <Route path="/explore">
-                <Explore/>
+                <Explore />
+              </Route>
+              <Route path="/signup">
+                <Signup />
               </Route>
               <Route path="/newPost">
-                <NewPost/>
+                <NewPost />
+              </Route>
+              <Route path="/login">
+                <Login />
               </Route>
               <Route path="/activity">
                 return <Activity />;
               </Route>
               <Route path="/profile/:userId?">
-                //Switch will render the first Route
-                <Profile/>
+                <Profile />
               </Route>
               <Route path="/:postId?">
-                <Home/>
+                <Home />
               </Route>
             </Switch>
           </main>

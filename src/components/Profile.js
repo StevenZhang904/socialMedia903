@@ -2,7 +2,7 @@ import React, { useContext }from "react";
 import Header from "./Header.js";
 import PostThumbnail from "./PostThumbnail.js";
 import css from "./Profile.module.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Redirect } from "react-router-dom";
 import { StoreContext } from "../contexts/StoreContext";
 
 function Profile(props) {
@@ -85,6 +85,7 @@ function Profile(props) {
     ));
   }
   return (
+    !userA?<Redirect to="login"/>:
     <div>
       <Header />
       <div className={css.upper}>

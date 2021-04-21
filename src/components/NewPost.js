@@ -3,9 +3,10 @@ import css from "./NewPost.module.css";
 import FileLoader from "./FileLoader.js";
 import { StoreContext } from "../contexts/StoreContext";
 import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 function NewPost(props) {
-  let {addPost} = useContext(StoreContext);
+  let {currentUserId, addPost} = useContext(StoreContext);
   const [dragging, setDragging] = useState(false); // to show a dragging effect
   const [desc, setDesc] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -61,6 +62,8 @@ function NewPost(props) {
     history.goBack();
   }
   return (
+    !currentUserId?<Redirect to="login"/>: 
+
     <div className={css.container}>
       <div className={css.photo}>
         {!photo ? (

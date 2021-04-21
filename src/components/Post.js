@@ -26,7 +26,9 @@ function Post(props) {
       <div>
         <div className={css.Publisher}>
           <img className={css.image1} src={props.user.photo} alt="userPic" />
-          <h3><Link to={"/profile/"+ props.user.id}>{props.user.id}</Link></h3>
+          <h3>
+            <Link to={"/profile/" + props.user.id}>{props.user.id}</Link>
+          </h3>
         </div>
         <div>
           <img src={props.post.photo} alt="postPic" />
@@ -56,8 +58,11 @@ function Post(props) {
           <p className={css.Likes}>{props.likes.count}likes</p>
         </div>
         <div className={css.container}>
-
-           <Comments userId={props.post.userId} desc={props.post.desc} comments={props.comments} />
+          <Comments
+            userId={props.post.userId}
+            desc={props.post.desc}
+            comments={props.comments}
+          />
           <br></br>
           <div className={css.TimeStamp}>{timespan(props.post.datetime)}</div>
           {toggleComment && (
